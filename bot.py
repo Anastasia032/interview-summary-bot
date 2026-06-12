@@ -134,13 +134,12 @@ async def add_note_to_peopleforce(candidate_id: str, note: str):
             "X-API-KEY": PEOPLEFORCE_API_KEY,
             "Content-Type": "application/json"
         }
-        # Додаємо HTML форматування для PeopleForce
-formatted_note = note.replace("\n\n", "<br><br>").replace("\n", "<br>")
-payload = {"comment": formatted_note}
+        formatted_note = note.replace("\n\n", "<br><br>").replace("\n", "<br>")
+        payload = {"comment": formatted_note}
 
         async with aiohttp_client.ClientSession() as session:
             async with session.post(url, json=payload, headers=headers) as resp:
-                if resp.status == 200:
+                if resp.status in (200, 201):
                     logger.info("PeopleForce: нотатку додано")
                     return True
                 else:
