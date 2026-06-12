@@ -11,9 +11,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Змінні середовища
-BOT_TOKEN = os.environ.get("8290920751:AAGgDL9XTWj0MaDqSeWgWY7aoIaVor9tKiU")
-PEOPLEFORCE_API_KEY = os.environ.get("LmLhye6ifyMyDWPzFH7UopUTeDgPw7rYXYE1P7yNxR4A4keNRyj5")
-RECRUITER_CHAT_ID = int(os.environ.get("-1003689121115"))
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+PEOPLEFORCE_API_KEY = os.environ.get("PEOPLEFORCE_API_KEY")
+RECRUITER_CHAT_ID = int(os.environ.get("RECRUITER_CHAT_ID"))
 WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET", "secret123")
 PORT = int(os.environ.get("PORT", 8080))
 
