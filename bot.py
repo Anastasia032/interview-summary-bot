@@ -165,6 +165,7 @@ async def main():
 
     await app_bot.initialize()
     await app_bot.start()
+    await app_bot.updater.start_polling()
 
     web_app = web.Application()
     web_app["bot_app"] = app_bot
