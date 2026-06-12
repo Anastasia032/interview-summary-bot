@@ -32,6 +32,7 @@ async def receive_summary(request):
         data = await request.json()
         summary = data.get("summary")
         file_name = data.get("file_name", "невідомий файл")
+        file_link = data.get("file_link", "")
 
         if not summary:
             return web.Response(status=400, text="No summary")
@@ -49,13 +50,30 @@ async def receive_summary(request):
             [InlineKeyboardButton("📋 Додати в PeopleForce", callback_data=f"peopleforce:{summary_id}")]
         ])
 
-        text = f"🎯 Summary співбесіди\n📄 {file_name}\n\n{summary}"
+        if file_link:
+            text = f"🎯 Summary співбесіди\n<a href='{file_link}'>📄 {file_name}</a>\n\n{summary}"
+        else:
+            text = f"🎯 Summary співбесіди\n📄 {file_name}\n\n{summary}"
 
         if len(text) > 4000:
-            await app.bot.send_message(chat_id=RECRUITER_CHAT_ID, text=text[:4000])
-            await app.bot.send_message(chat_id=RECRUITER_CHAT_ID, text=text[4000:], reply_markup=keyboard)
+            await app.bot.send_message(
+                chat_id=RECRUITER_CHAT_ID,
+                text=text[:4000],
+                parse_mode="HTML"
+            )
+            await app.bot.send_message(
+                chat_id=RECRUITER_CHAT_ID,
+                text=text[4000:],
+                reply_markup=keyboard,
+                parse_mode="HTML"
+            )
         else:
-            await app.bot.send_message(chat_id=RECRUITER_CHAT_ID, text=text, reply_markup=keyboard)
+            await app.bot.send_message(
+                chat_id=RECRUITER_CHAT_ID,
+                text=text,
+                reply_markup=keyboard,
+                parse_mode="HTML"
+            )
 
         return web.Response(text="OK")
 
