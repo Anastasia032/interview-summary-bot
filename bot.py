@@ -51,16 +51,30 @@ async def receive_summary(request):
         ])
 
         if file_link:
-            text = f"🎯 Summary співбесіди\n<a href='{file_link}'>📄 {file_name}</a>\n\n{summary}"
-        else:
-            text = f"🎯 Summary співбесіди\n📄 {file_name}\n\n{summary}"
+    text = f"🎯 Summary協бесіди\n<a href='{file_link}'>📄 {file_name}</a>\n\n{summary}"
+else:
+    text = f"🎯 Summary協бесіди\n📄 {file_name}\n\n{summary}"
 
-        if len(text) > 4000:
-            await app.bot.send_message(
-                chat_id=RECRUITER_CHAT_ID,
-                text=text[:4000],
-                parse_mode="HTML"
-            )
+if len(text) > 4000:
+    # Розділяємо по останньому новому рядку перед 4000 символів
+    split_point = text.rfind('\n', 0, 4000)
+    if split_point == -1:
+        split_point = 4000
+    
+    part1 = text[:split_point]
+    part2 = text[split_point:]
+    
+    await app.bot.send_message(
+        chat_id=RECRUITER_CHAT_ID,
+        text=part1,
+        parse_mode="HTML"
+    )
+    await app.bot.send_message(
+        chat_id=RECRUITER_CHAT_ID,
+        text=part2,
+        reply_markup=keyboard,
+        parse_mode="HTML"
+    )
             await app.bot.send_message(
                 chat_id=RECRUITER_CHAT_ID,
                 text=text[4000:],
