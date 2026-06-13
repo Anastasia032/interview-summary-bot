@@ -50,34 +50,29 @@ async def receive_summary(request):
             [InlineKeyboardButton("📋 Додати в PeopleForce", callback_data=f"peopleforce:{summary_id}")]
         ])
 
+        # Формуємо текст з посиланням
         if file_link:
-    text = f"🎯 Summary協бесіди\n<a href='{file_link}'>📄 {file_name}</a>\n\n{summary}"
-else:
-    text = f"🎯 Summary協бесіди\n📄 {file_name}\n\n{summary}"
+            text = f"🎯 Summary協бесіди\n📄 {file_name}\n{file_link}\n\n{summary}"
+        else:
+            text = f"🎯 Summary協бесіди\n📄 {file_name}\n\n{summary}"
 
-if len(text) > 4000:
-    # Розділяємо по останньому новому рядку перед 4000 символів
-    split_point = text.rfind('\n', 0, 4000)
-    if split_point == -1:
-        split_point = 4000
-    
-    part1 = text[:split_point]
-    part2 = text[split_point:]
-    
-    await app.bot.send_message(
-        chat_id=RECRUITER_CHAT_ID,
-        text=part1,
-        parse_mode="HTML"
-    )
-    await app.bot.send_message(
-        chat_id=RECRUITER_CHAT_ID,
-        text=part2,
-        reply_markup=keyboard,
-        parse_mode="HTML"
-    )
+        # Розділяємо текст розумніше
+        if len(text) > 4000:
+            split_point = text.rfind('\n', 0, 4000)
+            if split_point == -1:
+                split_point = 4000
+            
+            part1 = text[:split_point]
+            part2 = text[split_point:]
+            
             await app.bot.send_message(
                 chat_id=RECRUITER_CHAT_ID,
-                text=text[4000:],
+                text=part1,
+                parse_mode="HTML"
+            )
+            await app.bot.send_message(
+                chat_id=RECRUITER_CHAT_ID,
+                text=part2,
                 reply_markup=keyboard,
                 parse_mode="HTML"
             )
