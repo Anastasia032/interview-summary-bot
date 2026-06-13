@@ -52,9 +52,9 @@ async def receive_summary(request):
 
         # Формуємо текст з посиланням
         if file_link:
-            text = f"🎯 Summary協бесіди\n📄 {file_name}\n{file_link}\n\n{summary}"
+            text = f"🎯 Summary співбесіди\n📄 {file_name}\n{file_link}\n\n{summary}"
         else:
-            text = f"🎯 Summary協бесіди\n📄 {file_name}\n\n{summary}"
+            text = f"🎯 Summary співбесіди\n📄 {file_name}\n\n{summary}"
 
         # Розділяємо текст розумніше
         if len(text) > 4000:
